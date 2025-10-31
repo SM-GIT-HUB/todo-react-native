@@ -85,7 +85,7 @@ export const createHomeStyles = (colors: ColorScheme) => {
     },
     inputWrapper: {
       flexDirection: "row",
-      alignItems: "flex-end",
+      alignItems: "center",
       gap: 16,
     },
     input: {
@@ -93,13 +93,13 @@ export const createHomeStyles = (colors: ColorScheme) => {
       borderWidth: 2,
       borderRadius: 20,
       paddingHorizontal: 20,
-      paddingVertical: 16,
-      fontSize: 17,
+      paddingVertical: 14,
+      fontSize: 16,
       maxHeight: 120,
       fontWeight: "500",
       backgroundColor: colors.backgrounds.input,
       borderColor: colors.border,
-      color: colors.text,
+      color: colors.text
     },
     inputFocused: {
       borderColor: colors.primary,
