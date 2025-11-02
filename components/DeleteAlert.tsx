@@ -8,20 +8,26 @@ import React from 'react';
 import { Modal, Text, TouchableOpacity, View } from 'react-native';
 
 interface DeleteAlertProps {
-  id: Id<"todos">;
+  id: Id<"todos"> | null;
   isActive: boolean;
   setIsActive: (v: boolean) => void;
+  setDeleteId: (v: Id<"todos"> | null) => void;
 }
 
-export default function DeleteAlert({ id, isActive, setIsActive }: DeleteAlertProps) {
+export default function DeleteAlert({ id, isActive, setIsActive, setDeleteId }: DeleteAlertProps) {
   const { colors } = useTheme();
   const deleteTodo = useMutation(api.todos.deleteTodo);
   const deleteAlertStyles = createDeleteAlertStyles(colors);
   
   async function handleConfirm()
   {
+    if (id == null) {
+      return;
+    }
+
     await deleteTodo({ id });
     setIsActive(false);
+    setDeleteId(null);
   }
 
   return (
@@ -46,7 +52,6 @@ export default function DeleteAlert({ id, isActive, setIsActive }: DeleteAlertPr
           </View>
         </LinearGradient>
       </View>
-
     </Modal>
   )
 }

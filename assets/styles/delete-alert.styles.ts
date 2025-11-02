@@ -11,7 +11,7 @@ export const createDeleteAlertStyles = (colors: ColorScheme) => {
     },
     container: {
       width: 300,
-      borderRadius: 20,
+      borderRadius: 10,
       padding: 20,
       shadowColor: "#000",
       shadowOffset: { width: 0, height: 4 },

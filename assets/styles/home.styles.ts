@@ -237,3 +237,5 @@ export const createHomeStyles = (colors: ColorScheme) => {
 
   return styles;
 }
+
+export type HomeStylesType = ReturnType<typeof createHomeStyles>;
