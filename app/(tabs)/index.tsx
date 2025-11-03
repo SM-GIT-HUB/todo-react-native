@@ -5,38 +5,46 @@ import Header from "@/components/Header";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import TodoInput from "@/components/TodoInput";
 import TodoItem from "@/components/TodoItem";
-import { api } from "@/convex/_generated/api";
-import { Doc, Id } from "@/convex/_generated/dataModel";
 import useTheme from "@/hooks/useTheme";
-import { useMutation, useQuery } from "convex/react";
+import { useTodos } from "@/hooks/useTodos";
+import { TodoType } from "@/lib/database";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { FlatList, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-type TodoType = Doc<"todos">;
-
 export default function Index() {
   const { colors, toggleDarkMode } = useTheme();
   const homeStyles = createHomeStyles(colors);
   
-  let todos = useQuery(api.todos.getTodos);
-  const toogleTodo = useMutation(api.todos.toogleTodo);
-  const updateTodo = useMutation(api.todos.updateTodo);
-  const isLoading = (todos == undefined);
+  // let todos = useQuery(api.todos.getTodos);
+  // const toogleTodo = useMutation(api.todos.toogleTodo);
+  // const updateTodo = useMutation(api.todos.updateTodo);
+  // const isLoading = (todos == undefined);
 
+  // const [isActive, setIsActive] = useState(false);
+  // const [deleteId, setDeletdId] = useState<Id<"todos"> | null>(null);
+  
+  // const [editText, setEditText] = useState("");
+  // const [editingId, setEditingId] = useState<Id<"todos"> | null>(null);
+
+  const { isLoading, todos } = useTodos();
+
+  // const [todos, setTodos] = useState<TodoType[]>([]);
+  // const [isLoading, setIsLoading] = useState(false);
+  
   const [isActive, setIsActive] = useState(false);
-  const [deleteId, setDeletdId] = useState<Id<"todos"> | null>(null);
+  const [deleteId, setDeletdId] = useState<number | null>(null);
 
   const [editText, setEditText] = useState("");
-  const [editingId, setEditingId] = useState<Id<"todos"> | null>(null);
-
+  const [editingId, setEditingId] = useState<number | null>(null);
+  
   function renderTodoItem({ item } : { item: TodoType })
   {
     return (
       <TodoItem item={item} setIsActive={setIsActive} setDeleteId={setDeletdId} colors={colors} homeStyles={homeStyles} editText={editText}
-      setEditText={setEditText} editingId={editingId} setEditingId={setEditingId} toogleTodo={toogleTodo} updateTodo={updateTodo} />
+      setEditText={setEditText} editingId={editingId} setEditingId={setEditingId} />
     )
   }
 
@@ -50,7 +58,7 @@ export default function Index() {
 
         {
           isLoading? <LoadingSpinner/> :
-          <FlatList data={todos} renderItem={renderTodoItem} keyExtractor={(item) => item._id} style={homeStyles.todoList}
+          <FlatList data={todos} renderItem={renderTodoItem} keyExtractor={(item) => item.id.toString()} style={homeStyles.todoList}
           contentContainerStyle={homeStyles.todoListContent} ListEmptyComponent={<EmptyState/>} showsVerticalScrollIndicator={false} />
         }
 

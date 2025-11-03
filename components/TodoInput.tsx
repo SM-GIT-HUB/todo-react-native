@@ -1,8 +1,7 @@
 import { createHomeStyles } from '@/assets/styles/home.styles';
-import { api } from '@/convex/_generated/api';
 import useTheme from '@/hooks/useTheme';
+import { useTodos } from '@/hooks/useTodos';
 import { Ionicons } from '@expo/vector-icons';
-import { useMutation } from 'convex/react';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { Alert, TextInput, TouchableOpacity, View } from 'react-native';
@@ -12,14 +11,14 @@ export default function TodoInput() {
   const homeStyles = createHomeStyles(colors);
 
   const [newTodo, setNewTodo] = useState("");
-  const addTodo = useMutation(api.todos.addTodo);
+  const { addTodo } = useTodos();
 
-  async function handleSubmit()
+  function handleSubmit()
   {
     if (newTodo.trim())
     {
       try {
-        await addTodo({ text: newTodo });
+        addTodo({ text: newTodo });
         setNewTodo("");
       }
       catch(err: any) {

@@ -8,13 +8,6 @@ export default function LoadingSpinner() {
   const homeStyles = createHomeStyles(colors);
 
   return (
-    // <LinearGradient colors={colors.gradients.background} style={homeStyles.container}>
-    //   <View style={homeStyles.loadingContainer}>
-    //     <ActivityIndicator size='large' color={colors.primary} />
-    //     <Text style={homeStyles.loadingText}>Loading your todos...</Text>
-    //   </View>
-    // </LinearGradient>
-    
     <View style={homeStyles.loadingContainer}>
       <ActivityIndicator size='large' color={colors.primary} />
       <Text style={homeStyles.loadingText}>Loading your todos...</Text>

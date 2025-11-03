@@ -1,39 +1,36 @@
 import { HomeStylesType } from '@/assets/styles/home.styles';
-import { api } from '@/convex/_generated/api';
-import { Doc, Id } from '@/convex/_generated/dataModel';
 import { ColorScheme } from '@/hooks/useTheme';
+import { useTodos } from '@/hooks/useTodos';
+import { TodoType } from '@/lib/database';
 import { Ionicons } from '@expo/vector-icons';
-import { useMutation } from 'convex/react';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-type TodoType = Doc<"todos">;
-
 interface TodoItemProps {
   item: TodoType;
   setIsActive: (v: boolean) => void;
-  setDeleteId: (v: Id<"todos"> | null) => void;
+  setDeleteId: (v: number | null) => void;
   homeStyles: HomeStylesType;
   colors: ColorScheme;
   editText: string;
   setEditText: (v: string) => void;
-  editingId: Id<"todos"> | null;
-  setEditingId: (v: Id<"todos"> | null) => void;
-  toogleTodo: ReturnType<typeof useMutation<typeof api.todos.toogleTodo>>;
-  updateTodo: ReturnType<typeof useMutation<typeof api.todos.updateTodo>>;
+  editingId: number | null;
+  setEditingId: (v: number | null) => void;
 }
 
 export default function TodoItem(Obj: TodoItemProps) {
+  const { updateTodo, toogleTodo } = useTodos();
+
   function handleDelete()
   {
-    Obj.setDeleteId(Obj.item._id);
+    Obj.setDeleteId(Obj.item.id);
     Obj.setIsActive(true);
   }
 
   function handleEdit()
   {
-    Obj.setEditingId(Obj.item._id);
+    Obj.setEditingId(Obj.item.id);
     Obj.setEditText(Obj.item.text);
   }
 
@@ -45,14 +42,14 @@ export default function TodoItem(Obj: TodoItemProps) {
 
   async function handleSave()
   {
-    await Obj.updateTodo({ id: Obj.item._id, text: Obj.editText });
+    updateTodo({ id: Obj.item.id, text: Obj.editText });
     handleCancel();
   }
 
   return (
     <View style={Obj.homeStyles.todoItemWrapper}>
       <LinearGradient colors={Obj.colors.gradients.surface} style={Obj.homeStyles.todoItem} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} >
-        <TouchableOpacity style={Obj.homeStyles.checkbox} activeOpacity={0.7} onPress={() => Obj.toogleTodo({ id: Obj.item._id })} >
+        <TouchableOpacity style={Obj.homeStyles.checkbox} activeOpacity={0.7} onPress={() => toogleTodo({ id: Obj.item.id })} >
           <LinearGradient colors={Obj.item.isCompleted? Obj.colors.gradients.success : Obj.colors.gradients.muted}
           style={[Obj.homeStyles.checkboxInner, { borderColor: Obj.item.isCompleted? "transparent" : Obj.colors.border }]} >
             {
@@ -62,7 +59,7 @@ export default function TodoItem(Obj: TodoItemProps) {
         </TouchableOpacity>
 
         {
-          Obj.editingId == Obj.item._id? (
+          Obj.editingId == Obj.item.id? (
             <View style={Obj.homeStyles.editContainer}>
               <TextInput style={Obj.homeStyles.editInput} value={Obj.editText} onChangeText={Obj.setEditText}
               multiline placeholder='Edit your todo' placeholderTextColor={Obj.colors.textMuted} />

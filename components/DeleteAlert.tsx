@@ -1,31 +1,29 @@
 import { createDeleteAlertStyles } from '@/assets/styles/delete-alert.styles';
-import { api } from '@/convex/_generated/api';
-import { Id } from '@/convex/_generated/dataModel';
 import useTheme from '@/hooks/useTheme';
-import { useMutation } from 'convex/react';
+import { useTodos } from '@/hooks/useTodos';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { Modal, Text, TouchableOpacity, View } from 'react-native';
 
 interface DeleteAlertProps {
-  id: Id<"todos"> | null;
+  id: number | null;
   isActive: boolean;
   setIsActive: (v: boolean) => void;
-  setDeleteId: (v: Id<"todos"> | null) => void;
+  setDeleteId: (v: number | null) => void;
 }
 
 export default function DeleteAlert({ id, isActive, setIsActive, setDeleteId }: DeleteAlertProps) {
   const { colors } = useTheme();
-  const deleteTodo = useMutation(api.todos.deleteTodo);
+  const { deleteTodo } = useTodos();
   const deleteAlertStyles = createDeleteAlertStyles(colors);
   
-  async function handleConfirm()
+  function handleConfirm()
   {
     if (id == null) {
       return;
     }
 
-    await deleteTodo({ id });
+    deleteTodo({ id });
     setIsActive(false);
     setDeleteId(null);
   }
