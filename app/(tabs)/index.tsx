@@ -11,28 +11,14 @@ import { TodoType } from "@/lib/database";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { FlatList, Text, TouchableOpacity } from "react-native";
+import { FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
-  const { colors, toggleDarkMode } = useTheme();
+  const { colors } = useTheme();
   const homeStyles = createHomeStyles(colors);
-  
-  // let todos = useQuery(api.todos.getTodos);
-  // const toogleTodo = useMutation(api.todos.toogleTodo);
-  // const updateTodo = useMutation(api.todos.updateTodo);
-  // const isLoading = (todos == undefined);
-
-  // const [isActive, setIsActive] = useState(false);
-  // const [deleteId, setDeletdId] = useState<Id<"todos"> | null>(null);
-  
-  // const [editText, setEditText] = useState("");
-  // const [editingId, setEditingId] = useState<Id<"todos"> | null>(null);
 
   const { isLoading, todos } = useTodos();
-
-  // const [todos, setTodos] = useState<TodoType[]>([]);
-  // const [isLoading, setIsLoading] = useState(false);
   
   const [isActive, setIsActive] = useState(false);
   const [deleteId, setDeletdId] = useState<number | null>(null);
@@ -61,10 +47,6 @@ export default function Index() {
           <FlatList data={todos} renderItem={renderTodoItem} keyExtractor={(item) => item.id.toString()} style={homeStyles.todoList}
           contentContainerStyle={homeStyles.todoListContent} ListEmptyComponent={<EmptyState/>} showsVerticalScrollIndicator={false} />
         }
-
-        <TouchableOpacity onPress={toggleDarkMode}>
-          <Text>Switch theme</Text>
-        </TouchableOpacity>
       </SafeAreaView>
 
       <DeleteAlert id={deleteId} isActive={isActive} setIsActive={setIsActive} setDeleteId={setDeletdId} />

@@ -38,7 +38,7 @@ export const createSettingsStyles = (colors: ColorScheme) => {
     content: {
       paddingHorizontal: 20,
       gap: 20,
-      paddingBottom: 120,
+      paddingBottom: 5,
     },
     section: {
       borderRadius: 20,
@@ -102,9 +102,7 @@ export const createSettingsStyles = (colors: ColorScheme) => {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      paddingVertical: 20,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.border,
+      paddingVertical: 15,
     },
     settingLeft: {
       flexDirection: "row",

@@ -22,7 +22,7 @@ export const createDeleteAlertStyles = (colors: ColorScheme) => {
     title: {
       fontSize: 22,
       fontWeight: "700",
-      letterSpacing: -1,
+      letterSpacing: 0.4,
       marginBottom: 10,
       textAlign: "center",
       color: colors.text,

@@ -1,4 +1,4 @@
-import { dbAddTodo, dbDeleteTodo, dbGetTodos, dbToogleTodo, dbUpdateTodo, initDB, TodoType } from "@/lib/database";
+import { dbAddTodo, dbDeleteAll, dbDeleteTodo, dbGetTodos, dbToogleTodo, dbUpdateTodo, initDB, TodoType } from "@/lib/database";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 type TodosContextType = {
@@ -10,13 +10,14 @@ type TodosContextType = {
   toogleTodo: ({ id }: { id: number }) => void;
   updateTodo: ({ id, text }: { id: number, text: string }) => void;
   deleteTodo: ({ id }: { id: number }) => void;
+  deleteAllTodos: () => void;
 }
 
 const TodosContext = createContext<TodosContextType | null>(null);
 
 export function TodosProvider({ children }: { children: ReactNode })
 {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [todos, setTodos] = useState<TodoType[]>([]);
 
   function addTodo({ text }: { text: string })
@@ -49,16 +50,21 @@ export function TodosProvider({ children }: { children: ReactNode })
     setTodos(prev => prev.filter((t) => t.id != id));
   }
 
+  function deleteAllTodos()
+  {
+    dbDeleteAll();
+    setTodos([]);
+  }
+
   useEffect(() => {
     initDB();
-    setIsLoading(true);
     const res = dbGetTodos();
     setTodos(res);
     setIsLoading(false);
   }, [])
 
   return (
-    <TodosContext.Provider value={{ todos, setTodos, isLoading, setIsLoading, addTodo, toogleTodo, updateTodo, deleteTodo }}>
+    <TodosContext.Provider value={{ todos, setTodos, isLoading, setIsLoading, addTodo, toogleTodo, updateTodo, deleteTodo, deleteAllTodos }}>
       {children}
     </TodosContext.Provider>
   )
